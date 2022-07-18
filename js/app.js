@@ -43,7 +43,7 @@ const navbarElement = document.getElementById('navbar__list');
 function buildNavbar() {
   let navList = '';
   function navBarItem(section) {
-    navList += `<li><a class="menu__link" href="#${section.id}" data-navigation="${section.id}">${section.dataset.nav}</a></li>`;
+    navList += `<li><a class="menu__link" href="#${section.id}" data-navigation="${section.id}" id="navBar_${section.id}">${section.dataset.nav}</a></li>`;
   }
   sectionsElements.forEach(navBarItem);
   navbarElement.innerHTML = navList;
@@ -51,7 +51,24 @@ function buildNavbar() {
 buildNavbar();
 
 // Add class 'active' to section when near top of viewport
-
+function setSectionsAndNavItemAsActive() {
+  sectionsElements.forEach((section) => {
+    const sectionItem = document.getElementById(section.id);
+    const navItem = document.getElementById(`navBar_${section.id}`);
+    /**
+     * https://developer.mozilla.org/en-US/docs/Web/API/Element/getBoundingClientRect
+     * The Element.getBoundingClientRect() method returns a DOMRect object providing information about the size of an element and its position relative to the viewport.
+    */
+    let elementOffset = section.getBoundingClientRect();
+    if (elementOffset.top <= 100 && elementOffset.bottom >= 100) {
+      sectionItem.classList.add('your-active-class');
+      navItem.classList.add('your-active-class');
+    } else {
+      sectionItem.classList.remove('your-active-class');
+      navItem.classList.remove('your-active-class');
+    }
+  });
+}
 
 // Scroll to anchor ID using scrollTO event
 
@@ -68,7 +85,7 @@ buildNavbar();
 navbarElement.addEventListener("click", (event) => {
   event.preventDefault();
   if (event.target.dataset.navigation) {
-    let item = document.getElementById(`${event.target.dataset.navigation}`)
+    let item = document.getElementById(`${event.target.dataset.navigation}`);
     item.scrollIntoView({ behavior: "smooth" });
     setTimeout(() => {
       location.hash = `${event.target.dataset.navigation}`;
@@ -77,5 +94,4 @@ navbarElement.addEventListener("click", (event) => {
 });
 
 // Set sections as active
-
-
+document.addEventListener('scroll', setSectionsAndNavItemAsActive);
