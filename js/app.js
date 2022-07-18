@@ -48,7 +48,6 @@ function buildNavbar() {
   sectionsElements.forEach(navBarItem);
   navbarElement.innerHTML = navList;
 }
-buildNavbar();
 
 // Add class 'active' to section when near top of viewport
 function setSectionsAndNavItemAsActive() {
@@ -71,18 +70,7 @@ function setSectionsAndNavItemAsActive() {
 }
 
 // Scroll to anchor ID using scrollTO event
-
-
-/**
- * End Main Functions
- * Begin Events
- * 
-*/
-
-// Build menu 
-
-// Scroll to section on link click
-navbarElement.addEventListener("click", (event) => {
+function scrollToAnchorIdWhenClick(event) {
   event.preventDefault();
   if (event.target.dataset.navigation) {
     let item = document.getElementById(`${event.target.dataset.navigation}`);
@@ -91,7 +79,19 @@ navbarElement.addEventListener("click", (event) => {
       location.hash = `${event.target.dataset.navigation}`;
     }, 100);
   }
-});
+}
+
+/**
+ * End Main Functions
+ * Begin Events
+ * 
+*/
+
+// Build menu 
+buildNavbar();
+
+// Scroll to section on link click
+navbarElement.addEventListener("click", scrollToAnchorIdWhenClick);
 
 // Set sections as active
 document.addEventListener('scroll', setSectionsAndNavItemAsActive);
