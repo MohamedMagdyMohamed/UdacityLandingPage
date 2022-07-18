@@ -54,10 +54,6 @@ function setSectionsAndNavItemAsActive() {
   sectionsElements.forEach((section) => {
     const sectionItem = document.getElementById(section.id);
     const navItem = document.getElementById(`navBar_${section.id}`);
-    /**
-     * https://developer.mozilla.org/en-US/docs/Web/API/Element/getBoundingClientRect
-     * The Element.getBoundingClientRect() method returns a DOMRect object providing information about the size of an element and its position relative to the viewport.
-    */
     let elementOffset = section.getBoundingClientRect();
     if (elementOffset.top <= 100 && elementOffset.bottom >= 100) {
       sectionItem.classList.add('your-active-class');
