@@ -58,7 +58,7 @@ function setSectionsAndNavItemAsActive() {
   sectionsElements.forEach((section) => {
     const sectionItem = document.getElementById(section.id);
     const navItem = document.getElementById(`navBar_${section.id}`);
-    let elementOffset = section.getBoundingClientRect();
+    const elementOffset = section.getBoundingClientRect();
     if (elementOffset.top <= 100 && elementOffset.bottom >= 100) {
       sectionItem.classList.add('your-active-class');
       navItem.classList.add('your-active-class');
@@ -73,7 +73,7 @@ function setSectionsAndNavItemAsActive() {
 function scrollToAnchorIdWhenClick(event) {
   event.preventDefault();
   if (event.target.dataset.navigation) {
-    let item = document.getElementById(`${event.target.dataset.navigation}`);
+    const item = document.getElementById(`${event.target.dataset.navigation}`);
     item.scrollIntoView({ behavior: "smooth" });
     setTimeout(() => {
       location.hash = `${event.target.dataset.navigation}`;
