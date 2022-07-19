@@ -82,7 +82,7 @@ function scrollToAnchorIdWhenClick(event) {
 }
 
 // When the user scrolls down 100px from the top of the document, show the button
-function scrollFunction() {
+function windowScrollFunction() {
   if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
     goToTopButtonElement.style.display = 'block';
   } else {
@@ -109,4 +109,4 @@ document.addEventListener('scroll', setSectionsAndNavItemAsActive);
 goToTopButtonElement.addEventListener('click', scrollToTopFunction);
 
 // Show/Hide GoToTopButton on scroll
-window.onscroll = function() {scrollFunction()};
+window.onscroll = function() {windowScrollFunction()};
