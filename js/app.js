@@ -24,7 +24,6 @@
 */
 const sectionsElements = document.querySelectorAll('section');
 const navbarElement = document.getElementById('navbar__list');
-const goToTopButtonElement = document.getElementById("goToTopButton");
 
 /**
  * End Global Variables
@@ -32,10 +31,6 @@ const goToTopButtonElement = document.getElementById("goToTopButton");
  * 
 */
 
-// When the user clicks on the button, scroll to the top of the document
-function scrollToTopFunction() {
-  window.scrollTo({top: 0, behavior: 'smooth'});
-}
 
 /**
  * End Helper Functions
@@ -81,15 +76,6 @@ function scrollToAnchorIdWhenClick(event) {
   }
 }
 
-// When the user scrolls down 100px from the top of the document, show the button
-function windowScrollFunction() {
-  if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
-    goToTopButtonElement.style.display = 'block';
-  } else {
-    goToTopButtonElement.style.display = 'none';
-  }
-}
-
 /**
  * End Main Functions
  * Begin Events
@@ -104,9 +90,3 @@ navbarElement.addEventListener("click", scrollToAnchorIdWhenClick);
 
 // Set sections as active
 document.addEventListener('scroll', setSectionsAndNavItemAsActive);
-
-// Scroll to top when click on GoToTopButton
-goToTopButtonElement.addEventListener('click', scrollToTopFunction);
-
-// Show/Hide GoToTopButton on scroll
-window.onscroll = function() {windowScrollFunction()};
