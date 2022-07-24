@@ -22,6 +22,9 @@
  * Define Global Variables
  * 
 */
+
+const NAV_BAR_ITEM_PREFIX = 'navBar_';
+
 const sectionsElements = document.querySelectorAll('section');
 const navbarElement = document.getElementById('navbar__list');
 
@@ -31,6 +34,18 @@ const navbarElement = document.getElementById('navbar__list');
  * 
 */
 
+/**
+ * https://developer.mozilla.org/en-US/docs/Web/API/Element/getBoundingClientRect
+ * getBoundingClientRect method returns a DOMRect object providing information about the size of an element and its position relative to the viewport.
+ * get the height of the navBar section and check if the section is in the viewport minus the navbar.
+ * elementBoundingClientRect.top -> top of the viewport to top of the section element.
+ * elementBoundingClientRect.bottom -> top of the viewport to bottom of the sections element.
+ */
+function isElementVisibleInVisibleInViewPort(element) {
+  const elementBoundingClientRect = element.getBoundingClientRect();
+  const padding = parseInt(navbarElement.offsetHeight);
+  return elementBoundingClientRect.top <= padding && elementBoundingClientRect.bottom >= padding;
+}
 
 /**
  * End Helper Functions
@@ -40,21 +55,35 @@ const navbarElement = document.getElementById('navbar__list');
 
 // build the nav
 function buildNavbar() {
-  let navList = '';
-  function navBarItem(section) {
-    navList += `<li><a class="menu__link" href="#${section.id}" data-navigation="${section.id}" id="navBar_${section.id}">${section.dataset.nav}</a></li>`;
-  }
   sectionsElements.forEach(navBarItem);
-  navbarElement.innerHTML = navList;
+  function navBarItem(section) {
+    // https://developer.mozilla.org/en-US/docs/Web/API/Document/createElement
+    // Create html element
+    const newLi = document.createElement("li");
+    const newA = document.createElement("a");
+    // https://developer.mozilla.org/en-US/docs/Web/API/Element/setAttribute
+    // Sets Attribute to an element
+    newA.setAttribute("class", "menu__link");
+    newA.setAttribute("href", `#${section.id}`);
+    newA.setAttribute("id", `${NAV_BAR_ITEM_PREFIX}${section.id}`);
+    newA.text = section.dataset.nav;
+
+    newA.onclick = scrollToAnchorIdWhenClick;
+
+    // https://developer.mozilla.org/en-US/docs/Web/API/Node/appendChild
+    // Add a node to the end of the parent element
+    newLi.appendChild(newA);
+
+    navbarElement.appendChild(newLi);
+  }
 }
 
 // Add class 'active' to section when near top of viewport
 function setSectionsAndNavItemAsActive() {
   sectionsElements.forEach((section) => {
     const sectionItem = document.getElementById(section.id);
-    const navItem = document.getElementById(`navBar_${section.id}`);
-    const elementOffset = section.getBoundingClientRect();
-    if (elementOffset.top <= 100 && elementOffset.bottom >= 100) {
+    const navItem = document.getElementById(`${NAV_BAR_ITEM_PREFIX}${section.id}`);
+    if (isElementVisibleInVisibleInViewPort(section)) {
       sectionItem.classList.add('your-active-class');
       navItem.classList.add('your-active-class');
     } else {
@@ -66,14 +95,15 @@ function setSectionsAndNavItemAsActive() {
 
 // Scroll to anchor ID using scrollTO event
 function scrollToAnchorIdWhenClick(event) {
+  // preventDefault to prevet the a element default behaviour to be able to add smoth scroll
   event.preventDefault();
-  if (event.target.dataset.navigation) {
-    const item = document.getElementById(`${event.target.dataset.navigation}`);
-    item.scrollIntoView({ behavior: "smooth" });
-    setTimeout(() => {
-      location.hash = `${event.target.dataset.navigation}`;
-    }, 100);
-  }
+  // Remove the prefix 'navBar_'
+  // The a element have an id = navBar_{sectionId}
+  const sectionId = `${event.target.id}`.slice(NAV_BAR_ITEM_PREFIX.length);
+  const item = document.getElementById(sectionId);
+  // https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollIntoView
+  // Scroll to the element's parent container with a smooth transition animation
+  item.scrollIntoView({ behavior: "smooth" });
 }
 
 /**
@@ -82,11 +112,12 @@ function scrollToAnchorIdWhenClick(event) {
  * 
 */
 
-// Build menu 
-buildNavbar();
-
-// Scroll to section on link click
-navbarElement.addEventListener("click", scrollToAnchorIdWhenClick);
+/**
+ * Build menu
+ * https://developer.mozilla.org/en-US/docs/Web/API/Window/load_event
+ * The onLoad fire when the whole page is fully loaded
+ */
+window.onload = buildNavbar();
 
 // Set sections as active
 document.addEventListener('scroll', setSectionsAndNavItemAsActive);
