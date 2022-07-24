@@ -55,8 +55,7 @@ function isElementVisibleInVisibleInViewPort(element) {
 
 // build the nav
 function buildNavbar() {
-  sectionsElements.forEach(navBarItem);
-  function navBarItem(section) {
+  sectionsElements.forEach((section) => {
     // https://developer.mozilla.org/en-US/docs/Web/API/Document/createElement
     // Create html element
     const newLi = document.createElement("li");
@@ -75,7 +74,7 @@ function buildNavbar() {
     newLi.appendChild(newA);
 
     navbarElement.appendChild(newLi);
-  }
+  });
 }
 
 // Add class 'active' to section when near top of viewport
