@@ -82,6 +82,7 @@ function setSectionsAndNavItemAsActive() {
   sectionsElements.forEach((section) => {
     const sectionItem = document.getElementById(section.id);
     const navItem = document.getElementById(`${NAV_BAR_ITEM_PREFIX}${section.id}`);
+    // Add/Remove active state class depending if the section is visible in the viewport or not.
     if (isElementVisibleInVisibleInViewPort(section)) {
       sectionItem.classList.add('your-active-class');
       navItem.classList.add('your-active-class');
