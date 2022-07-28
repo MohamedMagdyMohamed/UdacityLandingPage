@@ -82,10 +82,17 @@ section {
     color: #000;
 }
 
-.navbar__menu .menu__link:hover {
-    background: #333;
-    color: #fff;
-    transition: ease 0.3s all;
+/**
+* https://developer.mozilla.org/en-US/docs/Web/CSS/@media/hover
+* media hover -> To prevent hover effect on touch devices
+*/
+/*  */
+@media (hover: hover) {
+    .navbar__menu .menu__link:hover {
+        background: #333;
+        color: #fff;
+        transition: ease 0.3s all;
+    }
 }
 
 .navbar__menu .your-active-class {
